@@ -1,37 +1,44 @@
-This project is a demonstration of a content-based recommendation system for Spotify that leverages user's preferences and audio features to generate personalized song recommendations.
+# Spotify Recommendation System using K-means
 
-Introduction
-A music recommendation system is a system that uses various techniques to suggest songs or pieces of music to users. The goal of such a system is to personalize the music listening experience for each user, by providing them with a list of songs that they are likely to enjoy based on their listening history, preferences, and other factors. Music recommendation systems have become increasingly popular in recent years, with the rise of streaming services such as Spotify, Apple Music, and Pandora. These services use recommendation systems to help users discover new music and to keep them engaged with the platform.
+## Project Overview
+This project aims to build a recommendation system for Spotify users using the K-means clustering algorithm. The system suggests songs to users based on the audio features of songs, grouping them into clusters. By leveraging these clusters, the system can recommend songs that are similar to the ones the user is currently listening to.
 
-Problem Definition
-There are several challenges in developing a music recommendation system. One of the main challenges is dealing with the large amount of data available. At the same time, there are certain challenges which we want to address with this project. To work on these problems, we will start out by collecting data from Spotify API or a Kaggle dataset. Then we will clean and analyze the data to find insights to better understand the relationship between every variable. Later we will munge the data and apply normalization, encoding preprocessing. Once data is prepared, we aim to try a bunch of models and techniques like collaborative filtering, content filtering, pairwise ranking etc. to find the best model which can recommend songs based on historical data. After defining threshold and retrieving results, we plan to create visualizations which support our output and help convey good recommendations to user.
+### Key Features
+- **K-means Clustering**: The main technique used to group similar songs together based on their audio features.
+- **Personalized Recommendations**: Recommending songs from the same cluster as the user's favorite tracks.
+- **Feature Engineering**: Using audio features such as tempo, energy, danceability, and loudness for clustering.
 
-Data Sources
-Our main goal is to integrate this project with Spotify API. However, in the initial stages we will be using a dataset publicly available on Kaggle.
+## Dataset
+The dataset used in this project is the **Spotify Million Playlist Dataset**, which contains a variety of songs along with their audio features. Each song has multiple attributes, including:
+- **Track Name**
+- **Artist Name**
+- **Genres**
+- **Audio Features**: Danceability, energy, key, loudness, speechiness, acousticness, instrumentalness, liveness, valence, tempo, and others.
 
-Recommender System Design
-Recommender systems are a class of machine learning algorithms that suggest items or products to users based on their preferences and past behavior. The goal of these systems is to provide personalized recommendations to users, improving their overall experience and increasing engagement. There are several types of recommender systems, each with its unique features and limitations.
+## Problem Statement
+Music recommendation systems aim to suggest songs that users are likely to enjoy based on their listening history or preferences. By using K-means clustering, we group songs with similar audio characteristics into clusters. This allows us to recommend songs from the same cluster as a user's current favorite, creating a personalized music discovery experience.
 
-Content-based Recommenders:
-These systems recommend items that are similar to those a user has already liked in the past. The system analyzes the characteristics of the items that the user has interacted with, such as the genre of a movie, the author of a book, or the style of clothing, and suggests items with similar attributes.
+## Methodology
+1. **Data Preprocessing**:
+   - The dataset was cleaned and preprocessed by encoding categorical features and scaling numerical features.
+   - One-hot encoding was applied to the 'genre' column to create new features for each genre.
+   - Numerical features (such as tempo, danceability, and loudness) were scaled to a uniform range to ensure they contribute equally to the clustering process.
 
-Collaborative Filtering Recommenders:
-These systems recommend items based on the preferences of similar users. The system analyzes the user's past behavior and finds other users with similar tastes. It then recommends items that these similar users have interacted with but the target user has not yet.
+2. **K-means Clustering**:
+   - The K-means algorithm was applied to cluster songs based on their audio features.
+   - The number of clusters was chosen through experimentation, balancing cluster cohesion and separation to ensure high-quality recommendations.
 
-Since we don’t have user ratings for tracks available in our dataset, we will use Content-based Filtering. The idea is that a user will enter a list of tracks as input to our recommender system. Our system will then try to associate the songs with other songs in our data which closely match its attributes. For example, if your input contains Pop songs, it’s highly likely our model will recommend a pop song which has high association with the input tracks. But how do we actually build associations between tracks and recommend songs?
+3. **Recommendation Generation**:
+   - For each song, we determined its cluster label.
+   - The system then recommended songs from the same cluster as the input song, providing a list of similar songs for the user to explore.
 
-banner
+4. **Evaluation**:
+   - The effectiveness of the clustering was evaluated using metrics such as the Silhouette Score, which measures how similar songs are within their cluster compared to other clusters.
+   - While this is a simple approach, it provides a basis for more advanced recommendation techniques such as collaborative filtering or deep learning.
 
-We will first utilize a clustering algorithm on our entire song dataset.
-Each cluster output resembles a set of songs which share similar traits.
-Once a user enters a song, the system will compare its attributes and assign it a cluster.
-After assigning the cluster, the system will then check distance between the input song and all songs in that cluster and arrange them in an ascending order. There are multiple methods which can be used to perform this task. We will be utilizing ‘mean vectors’ and ‘cosine similarity’ for this project.
-Depending on how many recommendations a user wants, let’s call it ‘n’, the system can output top n recommendations based on the request.
-However, it's worth noting that content-based filtering can also suffer from the "more of the same" problem, where users receive recommendations that are too similar to their past behavior or preferences. This can be fixed by utilizing hybrid approach but that is out of scope for our project due to unavailability of data points, due to privacy concerns from Spotify’s end.
-
-Implementation
-Now that we have designed our Recommender System, we need to implement it in a way that it relates with the dataset that we have in hand. Our first roadblock is to streamline the ‘song lookup’ process. For example, If a user provides an input “seven nation army”, then the recommender system has to process the string and understand that the user is referring to the song “Seven Nation Army – The White Stripes”. To ensure that our song lookup works, we used a library called ‘spotipy’. Spotipy, when provided with access credentials to Spotify API, opens a plethora of options to access functions and data provided by Spotify. We first created our developer account on Spotify and applied for a developer access to their API through OAuth2. Once we have the necessary credentials, we used spotipy’s inbuilt functions to access and search songs and their features so that we can feed it as an input to our recommender system. banner Once we have the necessary input data provided by Spotify API, we move on to assigning cluster, calculating mean vectors for our existing dataset songs and lastly calculating cosine similarity. Cosine similarity is a commonly used measure of similarity between two non-zero vectors. It measures the cosine of the angle between the two vectors in a multi-dimensional space, where the value ranges from -1 (for opposite directions) to 1 (for the same direction).
-
-banner
-
-In other words, it is a measurement of how similar two vectors are in terms of their orientation. The closer the cosine similarity value is to 1, the more similar the vectors are, and the closer it is to -1, the more dissimilar they are. A value of 0 indicates that the vectors are orthogonal (perpendicular) to each other.
+## Results
+- **Cluster Cohesion**: The songs within each cluster were highly similar, based on their audio features.
+- **User Experience**: Users were presented with songs that matched the general characteristics of the tracks they enjoyed, enhancing the discovery of new music within their preferred styles.
+  
+## Conclusion
+This project demonstrated how K-means clustering can be used to group similar songs and recommend them to users based on their preferences. While K-means is a basic clustering algorithm, it offers a straightforward approach for music recommendations. For future improvements, more sophisticated techniques such as collaborative filtering, matrix factorization, or deep learning could be implemented to further personalize recommendations.
