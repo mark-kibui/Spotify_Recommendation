@@ -1,5 +1,5 @@
 # Spotify Recommendation System using K-means
-
+![Logo](path/to/logo.png)
 ## Project Overview
 This project aims to build a recommendation system for Spotify users using the K-means clustering algorithm. The system suggests songs to users based on the audio features of songs, grouping them into clusters. By leveraging these clusters, the system can recommend songs that are similar to the ones the user is currently listening to.
 
